@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DIRS21.Mapping.Core.Interfaces;
+﻿using DIRS21.Mapping.Core.Interfaces;
 using DIRS21.Mapping.Models.Internal;
-using MappingConsoleUseCase.Models;
+using DIRS21.MappingConsoleUseCase.Models;
 
-namespace MappingConsoleUseCase.Mappers
+namespace DIRS21.MappingConsoleUseCase.Mappers
 {
     public class ReservationToBookingMapper : IMapper
     {

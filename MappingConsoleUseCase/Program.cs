@@ -6,11 +6,11 @@ using DIRS21.Mapping.Core.Exceptions;
 using DIRS21.Mapping.Extensions;
 using DIRS21.Mapping.Models.External.Google;
 using DIRS21.Mapping.Models.Internal;
-using MappingConsoleUseCase.Models;
+using DIRS21.MappingConsoleUseCase.Models;
 using DIRS21.Mapping.Core.Interfaces;
 using DIRS21.Mapping.Validation;
 
-namespace DIRS21.Mapping.ConsoleApp
+namespace DIRS21.MappingConsoleUseCase
 {
     class Program
     {

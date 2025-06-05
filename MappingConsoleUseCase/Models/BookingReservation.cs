@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MappingConsoleUseCase.Models
+﻿
+namespace DIRS21.MappingConsoleUseCase.Models
 {
     // Custom model for new partner
     public class BookingReservation

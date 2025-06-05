@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DIRS21.Mapping.Core.Interfaces;
-using DIRS21.Mapping.Models.External.Google;
-using DIRS21.Mapping.Validation;
-using MappingConsoleUseCase.Models;
+﻿using DIRS21.Mapping.Validation;
+using DIRS21.MappingConsoleUseCase.Models;
 
-namespace MappingConsoleUseCase.Validators
+namespace DIRS21.MappingConsoleUseCase.Validators
 {
     public class BookingReservationValidator : IValidatorType
     {
