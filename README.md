@@ -10,8 +10,8 @@ This solution consists of two projects:
 
 ## Requirements
 
-- .NET 8.0
-- Visual Studio 2022 or VS Code
+- .NET 8.0 SDK
+- Visual Studio 2022
 
 ## DIRS21.Mapping - Class Library
 
@@ -42,12 +42,16 @@ Type-safe base class for creating mappers.
 <ProjectReference Include="..\DIRS21.Mapping\DIRS21.Mapping.csproj" />
 ```
 
-#### 2. Configure Services
+#### 2. Configure Services Using Extension Methods
+The class library provides convenient extension methods for service registration:
+
 ```csharp
 // In your Startup.cs or Program.cs
-services.AddDIRS21Mapping();
-services.AddMappersFromAssembly();
-services.AddValidatorsFromAssembly();
+using DIRS21.Mapping.Extensions;
+
+services.AddDIRS21Mapping();           // Registers core services
+services.AddMappersFromAssembly();      // Auto-discovers and registers mappers
+services.AddValidatorsFromAssembly();   // Auto-discovers and registers validators
 ```
 
 ## DIRS21.Mapping.ConsoleApp - Console Application
@@ -64,7 +68,7 @@ dotnet run --project src/DIRS21.MappingConsoleApp
 ### What the Console App Demonstrates
 
 1. **Basic Mapping**
-   - DIRS21 Reservation → Google Reservation 
+   - DIRS21 Reservation → Google Reservation
    - Google Reservation → DIRS21 Reservation
    - Room mappings
 
@@ -86,13 +90,15 @@ dotnet run --project src/DIRS21.MappingConsoleApp
 
 ```csharp
 // Program.cs
+using DIRS21.Mapping.Extensions;  // Extension methods from class library
+
 var host = Host.CreateDefaultBuilder(args)
     .ConfigureServices((context, services) =>
     {
-        // Add mapping services
-        services.AddDIRS21Mapping();
-        services.AddMappersFromAssembly();
-        services.AddValidatorsFromAssembly();
+        // Using extension methods to register services
+        services.AddDIRS21Mapping();           // Core services
+        services.AddMappersFromAssembly();      // Auto-discover mappers
+        services.AddValidatorsFromAssembly();   // Auto-discover validators
     })
     .Build();
 
@@ -111,79 +117,83 @@ New partners are added in the console application (or your own application) with
 ### Example: Adding Booking.com Support
 
 ### 1. In Console App - Create Model
-`DIRS21.Mapping.ConsoleApp/Models/BookingReservation.cs`
+`MappingConsoleUseCase/Models/BookingReservation.cs`
 ```csharp
-namespace DIRS21.Mapping.ConsoleApp.Models
+namespace MappingConsoleUseCase.Models
 {
     public class BookingReservation
     {
-        public string BookingRef { get; set; }
+        public string BookingReference { get; set; }
         public string GuestFullName { get; set; }
         public string ArrivalDate { get; set; }
-        public string DepartureDate { get; set; }
     }
 }
 ```
 
 ### 2. In Console App - Create Mapper
-`DIRS21.Mapping.ConsoleApp/Mappers/ReservationToBookingMapper.cs`
+`MappingConsoleUseCase/MappersReservationToBookingMapper.cs`
 ```csharp
-using DIRS21.Mapping.Core.Base;
+using DIRS21.Mapping.Core.Interfaces;
 using DIRS21.Mapping.Models.Internal;
-using DIRS21.Mapping.ConsoleApp.Models.External.Booking;
+using MappingConsoleUseCase.Models;
 
-public class ReservationToBookingMapper : MapperBase<Reservation, BookingReservation>
+namespace MappingConsoleUseCase.Mappers
 {
-    public override string SourceType => "Model.Reservation";
-    public override string TargetType => "Booking.Reservation";
-
-    protected override BookingReservation MapInternal(Reservation source)
+    public class ReservationToBookingMapper : IMapper
     {
-        return new BookingReservation
+        public string SourceType => "Model.Reservation";
+        public string TargetType => "Booking.Reservation";
+
+        public object Map(object source)
         {
-          BookingRef = reservation.Id,
-          GuestFullName = reservation.GuestName,
-          ArrivalDate = reservation.CheckIn.ToString("yyyy-MM-dd"),
-          DepartureDate = reservation.CheckOut.ToString("yyyy-MM-dd")
-        };
+            var reservation = source as Reservation;
+            return new BookingReservation
+            {
+                BookingRef = reservation.Id,
+                GuestFullName = reservation.GuestName,
+                ArrivalDate = reservation.CheckIn.ToString("yyyy-MM-dd"),
+                DepartureDate = reservation.CheckOut.ToString("yyyy-MM-dd")
+            };
+        }
     }
 }
+
 ```
 
 ### 3. In Console App - Create Validator (Optional)
 `DIRS21.Mapping.ConsoleApp/Validation/BookingReservationValidator.cs`
 ```csharp
 using DIRS21.Mapping.Validation;
-using DIRS21.Mapping.ConsoleApp.Models.External.Booking;
+using MappingConsoleUseCase.Models;
 
-public class BookingReservationValidator : ITypedValidator
+namespace MappingConsoleUseCase.Validators
 {
-    public string TypeName => "Booking.Reservation";
-    
-    public ValidationResult Validate(object data)
+    public class BookingReservationValidator : IValidatorType
     {
-        
-        ----
-          More code on validation
-        ----
-            
-        return errors.Any() 
-            ? ValidationResult.Failure(errors.ToArray())
-            : ValidationResult.Success();
+        public string TypeName => "Booking.Reservation";
+
+        public ValidationResult Validate(object data)
+        {
+            ---Validation Code---
+            return errors.Any()
+                ? ValidationResult.Failure(errors.ToArray())
+                : ValidationResult.Success();
+        }
     }
 }
+
 ```
 
 ### 4. Use It
 The mapper and validator are automatically discovered when the console app starts!
 ```csharp
 // In Program.cs
-var bookingData = mapHandler.Map(reservation, "Model.Reservation", "Booking.Reservation");
+var mapped = mapHandler.Map(reservation, "Model.Reservation", "Booking.Reservation");
 ```
 
 ## How Auto-Registration Works
 
-1. On application startup, `MapperInitializationService` runs
+1. On application startup, `ServiceCollectionExtensions` and `MapperInitializationService` runs
 2. It scans **all loaded assemblies** including:
    - DIRS21.Mapping.dll (contains Google mappers)
    - DIRS21.Mapping.ConsoleApp.exe (contains Booking mappers)
@@ -194,7 +204,7 @@ var bookingData = mapHandler.Map(reservation, "Model.Reservation", "Booking.Rese
 ## Project Responsibilities
 
 ### DIRS21.Mapping (Class Library)
-- **Core Framework**: MapHandler, interfaces, base class, exceptions
+- **Core Framework**: MapHandler, interfaces, base classes
 - **Services**: Registry, Factory, Validation
 - **Google Implementation**: As an example/default partner
 - **Reusable**: Can be used in any .NET project
@@ -220,7 +230,8 @@ var bookingData = mapHandler.Map(reservation, "Model.Reservation", "Booking.Rese
 
 - **Class Library**: Reusable in any .NET project
 - **Console App**: Working demonstration
-- **Auto-discovery**: No manual registration
+- **Auto-discovery**: No manual registration via `ServiceCollectionExtensions`
+- **Clean DI Integration**: Simple service registration with extension methods
 - **Zero modification**: Extend without changing existing code
 - **Type safety**: Compile-time checking
 - **Validation**: Built-in data validation
