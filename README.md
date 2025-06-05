@@ -61,8 +61,9 @@ A demonstration application showing how to use the mapping library.
 ### Running the Console App
 
 ```bash
-cd DIRS21.MappingSystem
-dotnet run --project src/DIRS21.MappingConsoleUseCase
+cd DIRS21
+donet build
+dotnet run --project MappingConsoleUseCase
 ```
 
 ### What the Console App Demonstrates
