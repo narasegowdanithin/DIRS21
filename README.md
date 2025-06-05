@@ -6,7 +6,7 @@ A .NET 8.0 solution for mapping data between DIRS21 internal models and partner 
 
 This solution consists of two projects:
 1. **DIRS21.Mapping** - Class library containing the mapping framework
-2. **DIRS21.Mapping.ConsoleApp** - Console application demonstrating the library usage
+2. **DIRS21.MappingConsoleUseCase** - Console application demonstrating the library usage
 
 ## Requirements
 
@@ -54,7 +54,7 @@ services.AddMappersFromAssembly();      // Auto-discovers and registers mappers
 services.AddValidatorsFromAssembly();   // Auto-discovers and registers validators
 ```
 
-## DIRS21.Mapping.ConsoleApp - Console Application
+## DIRS21.MappingConsoleUseCase - Console Application
 
 A demonstration application showing how to use the mapping library.
 
@@ -62,7 +62,7 @@ A demonstration application showing how to use the mapping library.
 
 ```bash
 cd DIRS21.MappingSystem
-dotnet run --project src/DIRS21.MappingConsoleApp
+dotnet run --project src/DIRS21.MappingConsoleUseCase
 ```
 
 ### What the Console App Demonstrates
@@ -70,7 +70,8 @@ dotnet run --project src/DIRS21.MappingConsoleApp
 1. **Basic Mapping**
    - DIRS21 Reservation → Google Reservation
    - Google Reservation → DIRS21 Reservation
-   - Room mappings
+   - DIRS21 Room → Google Room
+   - Google Room → DIRS21 Room
 
 2. **Validation**
    - Valid data scenarios
@@ -83,8 +84,8 @@ dotnet run --project src/DIRS21.MappingConsoleApp
    - Exception handling
 
 4. **Auto-Registration**
-   - How mappers are automatically discovered
-   - How validators are automatically registered
+   - mappers are automatically discovered
+   - validators are automatically registered
 
 ### Console App Code Structure
 
@@ -119,7 +120,7 @@ New partners are added in the console application (or your own application) with
 ### 1. In Console App - Create Model
 `MappingConsoleUseCase/Models/BookingReservation.cs`
 ```csharp
-namespace MappingConsoleUseCase.Models
+namespace DIRS21.MappingConsoleUseCase.Models
 {
     public class BookingReservation
     {
@@ -135,9 +136,9 @@ namespace MappingConsoleUseCase.Models
 ```csharp
 using DIRS21.Mapping.Core.Interfaces;
 using DIRS21.Mapping.Models.Internal;
-using MappingConsoleUseCase.Models;
+using DIRS21.MappingConsoleUseCase.Models;
 
-namespace MappingConsoleUseCase.Mappers
+namespace DIRS21.MappingConsoleUseCase.Mappers
 {
     public class ReservationToBookingMapper : IMapper
     {
@@ -161,12 +162,12 @@ namespace MappingConsoleUseCase.Mappers
 ```
 
 ### 3. In Console App - Create Validator (Optional)
-`DIRS21.Mapping.ConsoleApp/Validation/BookingReservationValidator.cs`
+`DIRS21.MappingConsoleUseCase/Validation/BookingReservationValidator.cs`
 ```csharp
 using DIRS21.Mapping.Validation;
-using MappingConsoleUseCase.Models;
+using DIRS21.MappingConsoleUseCase.Models;
 
-namespace MappingConsoleUseCase.Validators
+namespace DIRS21.MappingConsoleUseCase.Validators
 {
     public class BookingReservationValidator : IValidatorType
     {
@@ -209,7 +210,7 @@ var mapped = mapHandler.Map(reservation, "Model.Reservation", "Booking.Reservati
 - **Google Implementation**: As an example/default partner
 - **Reusable**: Can be used in any .NET project
 
-### DIRS21.Mapping.ConsoleApp (Console Application)
+### DIRS21.MappingConsoleUseCase (Console Application)
 - **Demonstrates**: How to use the mapping library
 - **New Partners**: Add Booking, Expedia, etc. here
 - **Testing**: Shows validation and error handling
@@ -224,7 +225,7 @@ var mapped = mapHandler.Map(reservation, "Model.Reservation", "Booking.Reservati
 | Model.Room | Google.Room | Class Library |
 | Google.Room | Model.Room | Class Library |
 | Model.Reservation | Booking.Reservation | Console App (Example) |
-| Booking.Reservation | Model.Reservation | Console App (Example) |
+
 
 ## Key Features
 
@@ -246,7 +247,7 @@ var mapped = mapHandler.Map(reservation, "Model.Reservation", "Booking.Reservati
 
 2. **Run Console Demo**
    ```bash
-   dotnet run --project src/DIRS21.Mapping.ConsoleApp
+   dotnet run --project src/DIRS21.MappingConsoleUseCase
    ```
 
 3. **Use in Your Project**
