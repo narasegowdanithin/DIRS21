@@ -8,16 +8,13 @@ namespace DIRS21.Mapping.Core
     /// </summary>
     public class MapHandler
     {
-        private readonly IMapperRegistry _mapperRegistry;
         private readonly IValidationService _validationService;
         private readonly IMapperFactory _mapperFactory;
 
         public MapHandler(
-            IMapperRegistry mapperRegistry,
             IValidationService validationService,
             IMapperFactory mapperFactory)
         {
-            _mapperRegistry = mapperRegistry ?? throw new ArgumentNullException(nameof(mapperRegistry));
             _validationService = validationService ?? throw new ArgumentNullException(nameof(validationService));
             _mapperFactory = mapperFactory ?? throw new ArgumentNullException(nameof(mapperFactory));
         }
