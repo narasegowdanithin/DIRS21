@@ -224,7 +224,7 @@ var mapped = mapHandler.Map(reservation, "Model.Reservation", "Booking.Reservati
 | Google.Reservation | Model.Reservation | Class Library |
 | Model.Room | Google.Room | Class Library |
 | Google.Room | Model.Room | Class Library |
-| Model.Reservation | Booking.Reservation | Console App (Example) |
+| Model.Reservation | Booking.Reservation | Console App (Extension Example) |
 
 
 ## Key Features
