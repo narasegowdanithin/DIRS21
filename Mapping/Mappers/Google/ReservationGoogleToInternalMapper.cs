@@ -18,7 +18,8 @@ namespace DIRS21.Mapping.Mappers.Google
             {
                 Id = source.ReservationId,
                 GuestName = source.Guest,
-                CheckIn = DateTime.Parse(source.StartDate)
+                CheckIn = DateTime.Parse(source.StartDate),
+                CheckOut= DateTime.Parse(source.EndDate)
             };
         }
     }
