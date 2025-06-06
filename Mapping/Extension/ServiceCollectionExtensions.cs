@@ -42,7 +42,7 @@ namespace DIRS21.Mapping.Extensions
 
             foreach (var mapperType in mapperTypes)
             {
-                services.AddTransient(typeof(IMapper), mapperType);
+                services.AddSingleton(typeof(IMapper), mapperType);
             }
 
             // Register MapperInitializationService to initialize registry on startup
@@ -68,7 +68,7 @@ namespace DIRS21.Mapping.Extensions
 
             foreach (var validatorType in validatorTypes)
             {
-                services.AddTransient(typeof(IValidatorType), validatorType);
+                services.AddSingleton(typeof(IValidatorType), validatorType);
             }
             return services;
         }
