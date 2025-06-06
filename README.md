@@ -248,7 +248,7 @@ var mapped = mapHandler.Map(reservation, "Model.Reservation", "Booking.Reservati
 
 2. **Run Console Demo**
    ```bash
-   dotnet run --project src/DIRS21.MappingConsoleUseCase
+   dotnet run --project MappingConsoleUseCase
    ```
 
 3. **Use in Your Project**
