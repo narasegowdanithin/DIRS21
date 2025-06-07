@@ -22,6 +22,8 @@ namespace DIRS21.Mapping.Extensions
             services.AddSingleton<IMapperFactory, MapperFactory>();
             services.AddScoped<MapHandler>();
 
+            // Register MapperInitializationService to initialize registry on startup
+            services.AddHostedService<MapperInitializationService>();
 
             return services;
         }
@@ -42,11 +44,9 @@ namespace DIRS21.Mapping.Extensions
 
             foreach (var mapperType in mapperTypes)
             {
-                services.AddSingleton(typeof(IMapper), mapperType);
+                services.AddTransient(typeof(IMapper), mapperType);
             }
 
-            // Register MapperInitializationService to initialize registry on startup
-            services.AddHostedService<MapperInitializationService>();
 
             return services;
         }
@@ -68,8 +68,21 @@ namespace DIRS21.Mapping.Extensions
 
             foreach (var validatorType in validatorTypes)
             {
-                services.AddSingleton(typeof(IValidatorType), validatorType);
+                services.AddTransient(typeof(IValidatorType), validatorType);
             }
+            return services;
+        }
+
+        /// <summary>
+        /// Complete setup with auto-discovery
+        /// </summary>
+        public static IServiceCollection AddDIRS21MappingWithAutoDiscovery(
+            this IServiceCollection services)
+        {
+            services.AddDIRS21Mapping();
+            services.AddMappersFromAssembly();
+            services.AddValidatorsFromAssembly();
+
             return services;
         }
     }

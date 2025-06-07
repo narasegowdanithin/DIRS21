@@ -23,15 +23,9 @@ namespace DIRS21.MappingConsoleUseCase
                     //services.AddSingleton<IMapper, ReservationToBookingMapper>();
                     // Register specific validators manually
                     //services.AddSingleton<IValidatorType, BookingReservationValidator>();
-                    // Add core mapping services
 
-                    services.AddDIRS21Mapping();
-
-                    // Register mappers from all assemblies
-                    services.AddMappersFromAssembly();
-
-                    // Register validators from all assemblies
-                    services.AddValidatorsFromAssembly();
+                    //use the extension method for adding mappers and validators
+                    services.AddDIRS21MappingWithAutoDiscovery();
 
                     // Configure logging
                     services.AddLogging(builder =>
