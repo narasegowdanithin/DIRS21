@@ -58,7 +58,7 @@ namespace DIRS21.MappingConsoleUseCase
             var logger = host.Services.GetRequiredService<ILogger<Program>>();
 
             // Test Case 0: Valid Booking  Reservation
-            Console.WriteLine("=== Test Case 0: Valid Booking Reservation ===");
+            Console.WriteLine("\n=== Test Case 0: Valid Booking Reservation ===\n");
             try
             {
                 var reservation1 = new Reservation
@@ -90,7 +90,7 @@ namespace DIRS21.MappingConsoleUseCase
 
 
             // Test Case 1: Valid Google Reservation
-           Console.WriteLine("=== Test Case 1: Valid Google Reservation ===");
+           Console.WriteLine("\n=== Test Case 1: Valid Google Reservation ===\n");
             try
             {
                 var validGoogleReservation = new GoogleReservation
@@ -122,7 +122,7 @@ namespace DIRS21.MappingConsoleUseCase
             }
 
             // Test Case 2: Invalid Google Reservation (null ID)
-            Console.WriteLine("\n=== Test Case 2: Invalid Google Reservation (null ID) ===");
+            Console.WriteLine("\n=== Test Case 2: Invalid Google Reservation (null ID) ===\n");
             try
             {
                 var invalidGoogleReservation = new GoogleReservation
@@ -142,7 +142,7 @@ namespace DIRS21.MappingConsoleUseCase
             }
 
             // Test Case 3: Invalid dates
-            Console.WriteLine("\n=== Test Case 3: Invalid Google Reservation (bad dates) ===");
+            Console.WriteLine("\n=== Test Case 3: Invalid Google Reservation (bad dates) ===\n");
             try
             {
                 var invalidDatesReservation = new GoogleReservation
@@ -162,7 +162,7 @@ namespace DIRS21.MappingConsoleUseCase
             }
 
             // Test Case 4: Test DIRS21 to Google mapping with validation
-            Console.WriteLine("\n=== Test Case 4: DIRS21 to Google Mapping ===");
+            Console.WriteLine("\n=== Test Case 4: DIRS21 to Google Mapping ===\n");
             try
             {
                 var reservation = new Reservation
@@ -190,7 +190,7 @@ namespace DIRS21.MappingConsoleUseCase
             }
 
             // Test Case 5: Invalid DIRS21 Reservation
-            Console.WriteLine("\n=== Test Case 5: Invalid DIRS21 Reservation ===");
+            Console.WriteLine("\n=== Test Case 5: Invalid DIRS21 Reservation ===\n");
             try
             {
                 var invalidReservation = new Reservation
@@ -209,10 +209,10 @@ namespace DIRS21.MappingConsoleUseCase
                 Console.WriteLine($" Validation failed (expected): {ex.Message}");
             }
 
-            Console.WriteLine("=== ROOM VALIDATOR TESTING ===\n");
+            Console.WriteLine("\n=== ROOM VALIDATOR TESTING ===\n");
 
-            // Test Case 1: Valid Room
-            Console.WriteLine("Test 1: Valid Room");
+            // Test Case 6: Valid Room
+            Console.WriteLine("=== Test 6: Valid Room === \n");
             try
             {
                 var validRoom = new Room
@@ -223,15 +223,21 @@ namespace DIRS21.MappingConsoleUseCase
                 };
 
                 var result = mapHandler.Map(validRoom, "Model.Room", "Google.Room");
-                Console.WriteLine("SUCCESS - Room validation passed and mapped successfully\n");
+                if (result is GoogleRoom googleRoom)
+                {
+                    Console.WriteLine("SUCCESS - Room validation passed and mapped successfully\n");
+                    Console.WriteLine($"  Google Room ID: {googleRoom.Id}");
+                    Console.WriteLine($"  Google Room Type: {googleRoom.RoomType}");
+                    Console.WriteLine($"  Google Room Price: {googleRoom.Rate}");
+                }
             }
             catch (MappingValidationException ex)
             {
                 Console.WriteLine($" FAILED - {ex.Message}\n");
             }
 
-            // Test Case 2: Invalid Room (negative price)
-            Console.WriteLine("Test 2: Invalid Room (negative price)");
+            // Test Case 7: Invalid Room (negative price)
+            Console.WriteLine("\n=== Test 7: Invalid Room (negative price) ===\n");
             try
             {
                 var invalidRoom = new Room

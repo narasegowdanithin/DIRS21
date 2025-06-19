@@ -10,11 +10,17 @@ namespace DIRS21.Mapping.Core.Interfaces
         /// <summary>
         /// Validate source data before mapping
         /// </summary>
-        ValidationResult ValidateSource(object data, string sourceType);
+        ValidationResult Validate(object data, string sourceType);
 
         /// <summary>
         /// Validate target data after mapping
         /// </summary>
-        ValidationResult ValidateTarget(object data, string targetType);
+        //ValidationResult ValidateTarget(object data, string targetType);
+
+
+        /// <summary>
+        /// Register Validator by type 
+        /// </summary>
+        void RegisterValidator(string typeName, IValidatorType validator);
     }
 }

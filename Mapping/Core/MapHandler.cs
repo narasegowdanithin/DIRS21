@@ -40,7 +40,7 @@ namespace DIRS21.Mapping.Core
             try
             {
                 // Validate source data
-                var validationResult = _validationService.ValidateSource(data, sourceType);
+                var validationResult = _validationService.Validate(data, sourceType);
                 if (!validationResult.IsValid)
                 {
                     throw new MappingValidationException(
@@ -59,7 +59,7 @@ namespace DIRS21.Mapping.Core
                 var result = mapper.Map(data);
 
                 // Validate target data
-                var targetValidationResult = _validationService.ValidateTarget(result, targetType);
+                var targetValidationResult = _validationService.Validate(result, targetType);
                 if (!targetValidationResult.IsValid)
                 {
                     throw new MappingValidationException(

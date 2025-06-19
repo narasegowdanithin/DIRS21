@@ -68,7 +68,7 @@ namespace DIRS21.Mapping.Services
 
         private void InitializeValidators(IServiceScope scope)
         {
-            var validationService = scope.ServiceProvider.GetService<IValidationService>() as ValidationService;
+            var validationService = scope.ServiceProvider.GetRequiredService<IValidationService>();
             if (validationService == null)
             {
                 _logger.LogWarning("ValidationService not found or not of type ValidationService");

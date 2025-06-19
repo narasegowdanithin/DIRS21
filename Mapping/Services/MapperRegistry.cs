@@ -8,7 +8,7 @@ namespace DIRS21.Mapping.Services
     public class MapperRegistry : IMapperRegistry
     {
         private readonly Dictionary<string, IMapper> _mappers =
-            new Dictionary<string, IMapper>(StringComparer.OrdinalIgnoreCase);
+         new Dictionary<string, IMapper>(StringComparer.OrdinalIgnoreCase);
 
         public void Register(IMapper mapper)
         {
@@ -23,6 +23,18 @@ namespace DIRS21.Mapping.Services
         {
             Register(new TMapper());
         }
+
+        //private readonly Dictionary<string, IMapper> _mappers; //For DI
+        //public MapperRegistry(IEnumerable<IMapper> mappers)
+        //{
+        //    if (mappers == null)
+        //        throw new ArgumentNullException(nameof(mappers));
+
+        //    _mappers = mappers.ToDictionary(
+        //        m => $"{m.SourceType}|{m.TargetType}",
+        //        m => m,
+        //        StringComparer.OrdinalIgnoreCase);
+        //}
 
         public IMapper GetMapper(string sourceType, string targetType)
         {

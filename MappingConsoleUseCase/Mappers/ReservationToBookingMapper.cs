@@ -9,19 +9,6 @@ namespace DIRS21.MappingConsoleUseCase.Mappers
         public override string SourceType => "Model.Reservation";
         public override string TargetType => "Booking.Reservation";
 
-
-        /*public object Map(object source)
-        {
-            var reservation = source as Reservation;
-            return new BookingReservation
-            {
-                BookingRef = reservation.Id,
-                GuestFullName = reservation.GuestName,
-                ArrivalDate = reservation.CheckIn.ToString("yyyy-MM-dd"),
-                DepartureDate = reservation.CheckOut.ToString("yyyy-MM-dd")
-            };
-        }*/
-      
         protected override BookingReservation MapInternal(Reservation source)
         {
             return new BookingReservation
